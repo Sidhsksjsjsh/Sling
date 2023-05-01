@@ -166,7 +166,7 @@ end
 end)
 
 T1:AddButton("Travel to selected world", function()
-travel(_G.SWorld)
+game:GetService("ReplicatedStorage").Events.UIAction:FireServer("TravelToArea", _G.SWorld)
 end)
 
 local eggv = T2:AddDropdown("Select egg", function(o)
@@ -208,7 +208,7 @@ Add(syncv, "equipment")
 T3:AddSwitch("auto upgrade", function(bool)
 _G.To = bool
 while wait() do
-    if toggle == false then break end
+    if _G.To == false then break end
        if _G.Sup == "block" then
 game:GetService("ReplicatedStorage").Events.UIAction:FireServer("UpgradeShop", "BlockStorage")
 end
@@ -216,7 +216,7 @@ end
 game:GetService("ReplicatedStorage").Events.UIAction:FireServer("UpgradeShop", "BallSpeed")
 end
     if _G.Sup == "equipment" then
-game:GetService("ReplicatedStorage").Events.UIAction:FireServer("UpgradeShop", "BallEquipment")
+game:GetService("ReplicatedStorage").Events.UIAction:FireServer("UpgradeShop", "BallsEquipped")
 end
    end
 end)

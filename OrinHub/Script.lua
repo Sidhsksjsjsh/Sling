@@ -20,25 +20,20 @@ function TargetPos(WN)
    return game:GetService("Workspace").Areas[WN].Important.EnemyBlocks["Colored Block"].Hitbox.CFrame
 end
 
+--[[
 function shoot(toggle, ParentPos)
-    while wait() do
-     if toggle == false then break end
+    while toggle do
   game:GetService("ReplicatedStorage").Events.RequestShoot:InvokeServer(ParentPos)
-   end
 end
 
 function unlock(toggle)
-     while wait() do
-      if toggle == false then break end
+     while toggle do
 game:GetService("ReplicatedStorage").Events.UIAction:FireServer("BuyNextArea")
-   end
 end
 
-function egg(toggle, eggname, hatchtype)
-   while wait() do
-    if toggle == false then break end
-game:GetService("ReplicatedStorage").Events.RequestEggHatch:FireServer(eggname, hatchtype or "Single")
-   end
+function egg(toggle, eggname)
+   while toggle do
+game:GetService("ReplicatedStorage").Events.RequestEggHatch:FireServer(eggname, "Single")
 end
 
 function reward(toggle)
@@ -77,11 +72,13 @@ function equip(toggle)
 game:GetService("ReplicatedStorage").Events.UIAction:FireServer("EquipBestBalls")
    end
 end
+--]]
 
 function Add(namev, content)
 namev:Add(content)
 end
 
+--[[
 function upgrade(toggle, upname)
    while wait() do
     if toggle == false then break end
@@ -96,6 +93,7 @@ game:GetService("ReplicatedStorage").Events.UIAction:FireServer("UpgradeShop", "
 end
    end
 end
+--]]
 
 local sw = T1:AddConsole({
     ["y"] = 50,
@@ -124,19 +122,47 @@ Add(world, "5")
 Add(world, "6")
 
 T1:AddSwitch("start shoot", function(bool)
-shoot(bool, CFrame.new(TargetPos(_G.SWorld)))
+_G.Shoot = bool
+while wait() do
+   if _G.Shoot == false then break end
+  game:GetService("ReplicatedStorage").Events.RequestShoot:InvokeServer(CFrame.new(TargetPos(_G.SWorld)))
+  end
 end)
 
 T1:AddSwitch("collect reward", function(bool)
-reward(bool)
+_G.R = bool
+while wait() do
+    if _G.R == false then break end
+game:GetService("ReplicatedStorage").Events.UIAction:FireServer("ClaimTimeReward", 1)
+game:GetService("ReplicatedStorage").Events.UIAction:FireServer("ClaimTimeReward", 2)
+game:GetService("ReplicatedStorage").Events.UIAction:FireServer("ClaimTimeReward", 2)
+game:GetService("ReplicatedStorage").Events.UIAction:FireServer("ClaimTimeReward", 3)
+game:GetService("ReplicatedStorage").Events.UIAction:FireServer("ClaimTimeReward", 4)
+game:GetService("ReplicatedStorage").Events.UIAction:FireServer("ClaimTimeReward", 5)
+game:GetService("ReplicatedStorage").Events.UIAction:FireServer("ClaimTimeReward", 6)
+game:GetService("ReplicatedStorage").Events.UIAction:FireServer("ClaimTimeReward", 7)
+game:GetService("ReplicatedStorage").Events.UIAction:FireServer("ClaimTimeReward", 8)
+game:GetService("ReplicatedStorage").Events.UIAction:FireServer("ClaimTimeReward", 9)
+game:GetService("ReplicatedStorage").Events.UIAction:FireServer("ClaimTimeReward", 10)
+game:GetService("ReplicatedStorage").Events.UIAction:FireServer("ClaimTimeReward", 11)
+game:GetService("ReplicatedStorage").Events.UIAction:FireServer("ClaimTimeReward", 12)
+   end
 end)
 
 T1:AddSwitch("auto sell", function(bool)
-sell(bool)
+_G.Sell = bool
+while wait() do
+    if _G.Sell == false then break end
+game:GetService("ReplicatedStorage").Events.UIAction:FireServer("Sell")
+   end
 end)
 
 T1:AddSwitch("auto unlock world", function(bool)
-unlock(bool)
+_G.Un = bool
+while wait() do
+if _G.Un == false then break end
+game:GetService("ReplicatedStorage").Events.UIAction:FireServer("BuyNextArea")
+end
 end)
 
 T1:AddButton("Travel to selected world", function()
@@ -156,11 +182,19 @@ Add(eggv, "Pearl Egg")
 Add(eggv, "Moon Egg")
 
 T2:AddSwitch("auto hatch", function(bool)
-egg(bool, _G.Segg)
+_G.Egg = bool
+while wait() do
+if _G.Egg == false then break end
+game:GetService("ReplicatedStorage").Events.RequestEggHatch:FireServer(_G.Segg, "Single")
+end
 end)
 
 T2:AddSwitch("auto equip best", function(bool)
-equip(bool)
+_G.Equip = bool
+while wait() do
+    if _G.Equip == false then break end
+game:GetService("ReplicatedStorage").Events.UIAction:FireServer("EquipBestBalls")
+   end
 end)
 
 local syncv = T3:AddDropdown("Select upgrade", function(o)
@@ -172,5 +206,17 @@ Add(syncv, "ball")
 Add(syncv, "equipment")
 
 T3:AddSwitch("auto upgrade", function(bool)
-upgrade(bool, _G.Sup)
+_G.To = bool
+while wait() do
+    if toggle == false then break end
+       if _G.Sup == "block" then
+game:GetService("ReplicatedStorage").Events.UIAction:FireServer("UpgradeShop", "BlockStorage")
+end
+    if _G.Sup == "ball" then
+game:GetService("ReplicatedStorage").Events.UIAction:FireServer("UpgradeShop", "BallSpeed")
+end
+    if _G.Sup == "equipment" then
+game:GetService("ReplicatedStorage").Events.UIAction:FireServer("UpgradeShop", "BallEquipment")
+end
+   end
 end)
